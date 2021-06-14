@@ -6,23 +6,23 @@ const Header = ({course}) => {
         <div>{course}</div>
     )
 }
-const Part = ({part, exercis}) => {
+const Part = ({part, exersises}) => {
     return (
         <div>
             <div>{part}</div>
-            <div>{exercis}</div>
+            <div>{exersises}</div>
         </div>
     )
 }
 const Content = ({ parts }) => {
-    console.log(parts)
     return (
         <div>
             {parts.map((part, index) => (
                 <Part
                     key={index + part.name}
                     part={part.name}
-                    exercis={part.count} />
+                    exersises={part.exersises}
+                />
             ))}
 
         </div>
@@ -34,28 +34,40 @@ const Total = ({allExercises}) => {
     )
 }
 const App = () => {
-    const course = 'Half Stack application development'
-    const part1 = 'Fundamentals of React'
-    const exercises1 = 10
-    const part2 = 'Using props to pass data'
-    const exercises2 = 7
-    const part3 = 'State of a component'
-    const exercises3 = 14
+    const course = {
+        course: 'Half Stack application development',
+        partes: [
+            {
+                name: 'Fundamentals of React',
+                exersises: 10
+            },
+            {
+                name: 'Using props to pass data',
+                exersises: 7
+            },
+            {
+                name: 'State of a component',
+                exersises: 14
+            }
+        ],
+        allExercises() {
+            return this.partes.reduce((acc, element) => {
+                return acc += element.exersises;
+            }, 0);
+        }
+    };
+
 
     return (
         <div>
             <Header
-                course={course}
+                course={course.course}
             />
             <Content
-                parts={[
-                    { name: part1, count: exercises1 },
-                    { name: part2, count: exercises2 },
-                    { name: part3, count: exercises3 }
-                ]}
+                parts={course.partes}
             />
             <Total
-                allExercises={ exercises1 + exercises2 + exercises3 }
+                allExercises={ course.allExercises() }
             />
         </div>
 
